@@ -1,4 +1,5 @@
 ASP.NET CORE MVC PROJESİ XUNIT TESTLERİ
+
 Öncelikle Core projesi içerisindeki blog controller test edildiğinden dolayı test classı BlogController bir bağımlılık olarak IRepositoy alır. Mock işlemini yapacağımız interface IRepositorydir. Burası taklit edilecek alandır. Asıl test edilecek nesne BlogControllerdır. Bu sınıf içerisindeki metotlar test edilir. Ekleme, silme, güncelleme işlemlerinin yapılması için elimizde blog bulunması gerekir.
 INDEX METODU TESTİ:
 İlk test edilecek metot Index metodudur. Burada iki durum karşımıza çıkar. İlk durumda Geriye view döndürülmesi beklenir.  İkinci durumda ise viewle birlikte bir data (blog) dönmesi beklenir. 
