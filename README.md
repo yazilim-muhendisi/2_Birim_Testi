@@ -1,6 +1,7 @@
 ASP.NET CORE MVC PROJESİ XUNIT TESTLERİ
 
 Öncelikle Core projesi içerisindeki blog controller test edildiğinden dolayı test classı BlogController bir bağımlılık olarak IRepositoy alır. Mock işlemini yapacağımız interface IRepositorydir. Burası taklit edilecek alandır. Asıl test edilecek nesne BlogControllerdır. Bu sınıf içerisindeki metotlar test edilir. Ekleme, silme, güncelleme işlemlerinin yapılması için elimizde blog bulunması gerekir.
+
 INDEX METODU TESTİ:
 İlk test edilecek metot Index metodudur. Burada iki durum karşımıza çıkar. İlk durumda Geriye view döndürülmesi beklenir.  İkinci durumda ise viewle birlikte bir data (blog) dönmesi beklenir. 
 İlk durumda ViewResult durumu test edilir. O yüzden herhangi bir mock işlemi yapılmasına gerek yoktur. Index metodundan gelen verinin viewresult olup olmadığı yazılan kodlarla test edilir. İkinci durumda içerisinde model dönüp dönmediğine dair test yapılacaktır. İlk durumda mock işlemi yapılmadığı için gelen Result’ın değeri boş olarak gelir. Daha sonra ise Getall() metodu üzerinde mock işlemi yapılır. Bu yapılan işlemlerde Index metodu içerisinde GetAll metodu çalıştığı zaman geriye belirtmiş olduğumuz blog dönecektir. 
@@ -10,6 +11,7 @@ INDEX METODU TESTİ:
 -	İkinci olarak bu viewresult’un değerinin bir bloglist olup olmadığına dair bir kontrol,
 -	Son olarak gelen bloglist sayısının yazılan değer olup olmadığına dair bir kontrol
 Bu işlemler başarılı bir şekilde gerçekleşirse test başarılıdır.
+
 DETAILS METODU TESTİ:
 Bu metot içerisinde test edilecek üç kısım bulunmaktadır.
 -	İd null dönerse geriye NotFound dönmesi durumu,
@@ -19,6 +21,7 @@ Bu metot içerisinde test edilecek üç kısım bulunmaktadır.
 İkinci adımın test aşaması  Fact attiribute kullanarak Details sayfasında geçersiz bir id olması durumu sonrası geriye NotFound dönmesi gerekmektedir. Mock üzerinden setup oluşturulur. 0 gönderildiğinde geriye null döndürülmesi için gereken kod yazılır. Controller içerisinde GetById metodu çalıştığı zaman mock kütüphanesi içerisinde yazılan sahte GetById metodu çalışır ve geriye null bir blog döndürülür. (id’ nin 0 verilmesi durumunda oluşur.)
 Yazılan redirect durumu Assert metodu üzerinden bir int değer test edileceği belirtilir. Durum kodunun 404 olması gerekir. Http protokolünde bazı geri dönüş tipleri vardır. Burada durum kodu da test edilmiş olmaktadır.
 Son adımın test aşaması  İd geçerli olması durumunda blog dönmesi beklenir. İkinci ve üçüncü durumlarda GetById metodu çalışır fakat ilk durumda çalışmadığından dolayı mock işlemi yapılır. GetById metodu çalışırsa ve geriye blog id gelirse geriye idsi 1 olan blog nesnesi döndürülür. Veri tabanına bağlanıp id’si 1 olan blog verisini almak yerine kendi oluşturduğumuz idsi 1 olan blog verisi alınır. Gönderilen blog, bizim göndermiş olduğumuz blog ise bu metot sonucunda gelen result blog idye eşit olup olmadığı kontrol edilir. 
+
 CREATE METODU TESTİ:
 Bu metot içerisinde iki ihtimal bulunmaktadır. İlk olarak ortada olan bir Create butonu ikinci olarak da kullanıcılar blog ekleyeceği zaman çalışacak olan HttpPost attiribute sahip olan Create butonudur.
 İlk kısım kolayca test edilebilir fakat ikinci alan için test edilecek bazı durumlar bulunmaktadır:
@@ -31,7 +34,7 @@ Biz işlem yaparken ilgili Model State geçerli olduğunda ilgili alan çalış�
 ModelState geçerli olduğu durumda blog işlemi gerçekleşip gerçekleşmediğine dair (yani repository içerisindeki create metodu çalışıyor mu ?) test kontrolü yapılır.
 Boş bir blog nesnesi oluşturulur. Create metoduna mock işlemi yapılır. Bizden bir blog girmemiz istenir, “herhangi bir blog” olduğunu belirtmek için It.IsAny<Blog> metodunu kullanırız. Blog içerisine hangi blog nesnesini verdiysek CallBack metodu kullanarak çalıştırıyoruz. Gelen blog nesnesi yeni bir değişkene aktarılır ve controller içerisindeki create metodu çağrılır. Create metodunun bir kez çalışıp çalışmadığı doğrulanır.  Sahte create metoduna herhangi bir metot geldiyse ve bu metot en az bir kere çalıştıysa testimiz başarılı olur. Assert metodu ile, id’si 1 olan blog verisinin yeni eklenen blog verisine eşit olup olmadığının kontrolü sağlanır. İstersek başka özelliklerini de karşılaştırabiliriz.
 Yeni testimizde create metodunun hiç çalışmaması durumu ele alınır. Test metodu içerisine hata eklenir. Controller içerisinde create metodunun çalışıp, Repository kısmındaki create metodunun çalışmaması durumunu istenildiği için Times.Never olarak ayarlandı.
-
+ 
 EDIT METODUNUN TEST EDİLMESİ 
 İlk durumda Index sayfasına dönüp dönmediği test edilir. Id’ nin null olma durumu kontrol edilir. Metot parametre almadığından dolayı fact olarak işaretlenir. Assert metodu kullanılarak Index sayfası olup olmadığı kontrol edilir.
 İkinci durumda blog controller içerisine id olarak olmayan bir id girilmesi durumunda blog = null olmalı ve geriye notfound döndürmelidir. Bu işlem test edilir. 
