@@ -1,4 +1,4 @@
-------------------------------------------ASP.NET CORE MVC PROJESİ XUNIT TESTLERİ-------------------------------
+--------------------------------ASP.NET CORE MVC PROJESİ XUNIT BİRİM VE ENTEGRASYON TESTLERİ-------------------------------
 
 Öncelikle Core projesi içerisindeki blog controller test edildiğinden dolayı test classı BlogController bir bağımlılık olarak IRepositoy alır. Mock işlemini yapacağımız interface IRepositorydir. Burası taklit edilecek alandır. Asıl test edilecek nesne BlogControllerdır. Bu sınıf içerisindeki metotlar test edilir. Ekleme, silme, güncelleme işlemlerinin yapılması için elimizde blog bulunması gerekir.
 
@@ -86,7 +86,7 @@ Dördüncü adımda -> Index sayfasına dönüp dönmediği  testi gerçekleşti
 
 Beşinci adımda -> Blog controller üzerinde delete methodunun çalışıp çalışmadığı test edilir. Action çalıştığı zaman delete methodunun çalıştığı kontrol edilir. Daha sonra x.id metottan gelen blogid’ye eşitlenir.  Repo üzerinden delete methodu çalışması beklenir. Burada delete methodu geriye bir şey döndürmez. Sonrasında doğrulama işlemi en az  1 kere yapılır.
 
--------------------------------------------------API PROJECT TEST XUNIT TESTLERİ-----------------------------------------------
+------------------------------------API PROJECT TEST XUNIT BİRİM VE ENTEGRASYON TESTLERİ---------------------------
 
 BLOGAPICONTROLLER OLUŞTURMA
 
