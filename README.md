@@ -1,4 +1,4 @@
-------------------------------------ASP.NET CORE MVC PROJESİ XUNIT TESTLERİ----------------------------------------------
+------------------------------------------ASP.NET CORE MVC PROJESİ XUNIT TESTLERİ-------------------------------
 
 Öncelikle Core projesi içerisindeki blog controller test edildiğinden dolayı test classı BlogController bir bağımlılık olarak IRepositoy alır. Mock işlemini yapacağımız interface IRepositorydir. Burası taklit edilecek alandır. Asıl test edilecek nesne BlogControllerdır. Bu sınıf içerisindeki metotlar test edilir. Ekleme, silme, güncelleme işlemlerinin yapılması için elimizde blog bulunması gerekir.
 
@@ -80,4 +80,52 @@ DELETE METODUNUN TEST EDİLMESİ
 
 İkinci adımda -> id’ye sahip blog olup olmadığının kontrolü sağlanıp eğer yoksa geriye NotFound döndürülmesi sağlanır. Öncelikle null blog nesnesi oluşturulur. Mock üzerinden setup içerisine x üzerinden GetById verilip bu metoda blogid geldiğinde geriye nullolan blog nesnesi döndürülür. Controller üzerinden delete metodu çalıştırılır.
 
-Üçüncü adımda -> blog nesnesinde var olan bir id gönderilir ve geriye blog modeli döndürülüyor mu kontrol edilir. id’si 1 olan ürün almaya çalışılır. x.id metottan gelen blogid’ye eşitlenir. 
+Üçüncü adımda -> Blog nesnesinde var olan bir id gönderilir ve geriye blog modeli döndürülüyor mu kontrol edilir. id’si 1 olan ürün almaya çalışılır. x.id metottan gelen blogid’ye eşitlenir. Repo’nun GetById methodu çalışacak ve blogıd gelirse blogıd dönmesi beklenir. Controller üzerinden Delete methodunu çalıştırılır. Assert üzerinden delete’ten gelen resultun viewresult olmadığı test edilir. Daha sonra model test edilir.
+
+Dördüncü adımda -> Index sayfasına dönüp dönmediği  testi gerçekleştirilir. 
+
+Beşinci adımda -> Blog controller üzerinde delete methodunun çalışıp çalışmadığı test edilir. Action çalıştığı zaman delete methodunun çalıştığı kontrol edilir. Daha sonra x.id metottan gelen blogid’ye eşitlenir.  Repo üzerinden delete methodu çalışması beklenir. Burada delete methodu geriye bir şey döndürmez. Sonrasında doğrulama işlemi en az  1 kere yapılır.
+
+-------------------------------------------------API PROJECT TEST XUNIT TESTLERİ-----------------------------------------------
+
+BLOGAPICONTROLLER OLUŞTURMA
+
+Var olan proje içerisinde Api oluşturmak gereksiz kod tekrarlarını önlemeyi sağlar. İçerideki kodlara GetBlog methodu verilirse methodların çalışması sağlanır. OkResult hepsini IActionResult ile implement ettikten sonra istenilen durum kodları döndürülür. Id , güncellenecek Id den farklı olduğu zaman Clint hatası olur. O yüzden BadRequest döndürülür.
+
+POSTMAN PROGRAMI ARACILIĞI İLE API’LERİ TEST ETME
+
+Postman ücretsiz API aracıdır.  Bu uygulamada API’ler test edilir. Postman’da  istekleri ve isteklerin method tipi belirlenir ve sonuç görüntülenir. Controller üzerinden yapılan isteğin tipine göre methodlara erişilir. Controller üzerinden endpointler çağırılır.
+
+GETBLOG() METHODUNUN TEST EDİLMESİ
+
+API içindeki methodlar test edilir. OkResult Notfound gibi değerler http durum kodlarıyla beraber içerisinde  datalar döner.
+
+GETBLOG(İNT) METHODUNUN TEST EDİLMESİ
+
+Birinci adımda GetBlog methodunun int değer alan overloadının test işlemi gerçekleşir. 2 seneryo ele alınır. 
+
+Birinci senaryoda Blog null olduğu  zaman NotFound döner mi diye test yapılır. X.GetById 0 olduğu zaman null döndüğü test edilir.
+
+İkinci adımda ise GetBlog methodunun int değer alan overloadının test işlemine devam edilir. 
+
+İkinci senaryoda geriye OkResult dönüyor mu testi yapılır. X.GetById 1 olduğu zaman blog döndüğü test edilir.
+
+PUTBLOG METHODUNUN TEST EDİLMESİ
+
+Güncelleme işlemlerinin gerçekleştiği alandır. Bir blog nesnesi üzerinden bu methodla beraber güncelleme yapılır.
+
+Birinci adımda BadRequest() methodunun obje almayan durumu sorgulanır. x.Id  blog’a eşit ise karşılaştığı ilk data’yı alır.
+
+İkinci adımda PutBlog uygun bir şekilde çalıştığı zaman tek bir methodta  update methodunun çalıştığı hem de geriye NoContent dönüp dönmediği test edilir.
+
+POSTBLOG METHODUNUN TEST EDİLMESİ
+
+Create methodu test edilir  ve geriye CreatedAtAction methodu geriye dönüyor mu, tek bir senaryoda test edilir. GetBlog çalışıyor mu diye test edilir.
+
+DELETEBLOG METHODUNUN TEST EDİLMESİ
+
+ActionResult üzerinden değil ActionResult sınıfı üzerinden almış olduğu Generic bloğu üzerinden test gerçekleşir. İstenilen durum kodunda geriye dönülebilir.
+
+Birinci adım da Bloğun null olma durumu ve NotFound dönme olayı test edilir. Controller üzerinden delete methodu çalışır.
+
+İkici adım da geçerli bir BlogId verildiği zaman delete methodunun çalışıp çalışmadığı ve NoContentin dönüp dönmediği test edilir.
